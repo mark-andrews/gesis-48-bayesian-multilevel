@@ -1,0 +1,101 @@
+\documentclass{slides}
+\usepackage{xspace}
+\usepackage{nth}
+\usepackage{fontawesome}
+\usepackage{xspace,tikz,graphicx,nth}
+
+\title{A Brief History of Bayesian Inference}
+\author[Andrews]{Mark Andrews\\ $\phantom{foo}$ \\ Psychology, Nottingham Trent University \\ $\phantom{foo}$ \\ \faEnvelopeO \  \texttt{mark.andrews@ntu.ac.uk},\ \faEnvelopeO\  \\ $\phantom{foo}$ \\ \faTwitter \href{https://twitter.com/xmjandrews}{@xmjandrews}, }
+
+\date{March 25, 2018}
+
+\begin{document}
+{
+	\begin{frame}
+		\titlepage
+	\end{frame}
+}
+
+
+\begin{frame}
+	\frametitle{Bayes's Theorem}
+	\begin{itemize}
+
+	\item  The origin of Bayesian inference can be traced to a posthumously published 1763 essay
+		\emph{Towards Solving a Problem in the Doctrine of Chances},
+		written some years earlier by Reverend Thomas Bayes
+		(1701-1761). 
+
+	\item In this essay, Bayes focused on a problem that is mathematically
+		identical to the problem of inferring the bias of a coin after
+		observing the outcome of a sequence of flips of that coin.  
+		
+	\item Bayes showed that the probability that the coin's bias is exactly
+		$\theta$ is proportional to the prior probability of $\theta$
+		multiplied by the probability of the observed outcomes given
+		$\theta$.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Laplace and Inverse Inference}
+	\begin{itemize}
+		\item Shortly after the publication of Bayes's essay,  the
+			French polymath Pierre-Simon Laplace (1749-1827)
+			independently rediscovered Bayes' theorem and began to
+			apply it to practical problems of data analysis.
+
+
+	\item Laplace was the first to present Bayesian inference in what is now its modern form:
+		\[
+			\underbrace{\Prob{\theta \given \data}}_{\text{Posterior}}
+			= 
+			\frac{\overbrace{\Prob{\data \given \theta}}^{\text{likelihood}}
+				\overbrace{\Prob{\theta}}^{\text{prior}}}
+				{\underbrace{\int \Prob{\data \given \theta}\Prob{\theta} d\theta}_{\text{marginal likelihood}}}
+		\]
+
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Frequentism}
+	\begin{itemize}
+
+		\item By the early \nth{20} century, a frequentist definition
+			of probability became increasingly widely adopted.
+
+		\item Crucially, frequentism entails that the concept of
+			probability only applies to the outcomes of random
+			physical processes.
+
+\item As such, a parameter such as the bias of a coin, being a fixed but
+	unknown quantity, can not be given a probabilistic interpretation.  
+
+\item From this perspective, in the words of
+R. A. Fisher, Bayesian methods were ``\ldots founded upon an error, and must be
+wholly rejected.'' because
+``(i)nferences respecting populations, from which known samples have been
+drawn, cannot be expressed in terms of probability''. Fisher (1925).
+
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{The Return of Bayesian Methods}
+	
+	\begin{itemize}
+		\item Bayesian methods remained marginalized from the early to the late
+		\nth{20} century
+		\item However, their potential practical advantage over
+		classical methods was that the could be applied in principle to any problem
+		where a probabilistic model of data could be specified.  
+		\item When computer power was minimal, any ``in principle'' advantages of Bayesian
+		methods were not important.
+		\item However, the roughly exponential growth of
+		computational power from the 1970s onwards was the eventual catalyst for the adoption of
+		Bayesian methods.
+		\item By the late 1980's, Bayesian methods began returning to widespread use in science.
+	\end{itemize}
+\end{frame}
+\end{document}
