@@ -39,11 +39,11 @@ is a random sample.
 
 * This distribution is known as the *population* or the *true data generating process* or the *true probabilistic generative model*.
 
-* We aim to produce a model of this distributon.
+* We aim to produce a model of this distribution.
 
 * This model is a mathematical model of some phenomenon in the world or in reality (the underlying that lead to the data).
 
-* Like any mathematic model or scientific model is allows us in principle to explain and to predict.
+* Like any mathematical model or scientific model is allows us in principle to explain and to predict.
 
 # Probabilistic generative models
 
@@ -61,7 +61,7 @@ $$
 $$
 then one possibility would be to have
 $$
-\log(x_i) \sim N(\mu, \sigma)\quad\text{for $i \in 1, 2 \ldots n$}
+\log(x_i) \sim N(\mu, \sigma^2)\quad\text{for $i \in 1, 2 \ldots n$}
 $$
 
 
@@ -89,7 +89,7 @@ $$
 
 # Likelihood based inference
 
-* We calculate the likelhood function
+* We calculate the likelihood function
   $$
   L(\theta_0 \given \mathcal{D})  \propto \Prob{\mathcal{D} \given \theta}
   $$
@@ -99,7 +99,7 @@ $$
 
 * For Bayesian inference $\theta_0$, we must first provide a probability distribution of the possible values of
 $\theta_0$. This would specify the range of values that $\theta_0$ could take in principle, and their relative probabilities.
-* By making this addtion, we are assuming an expaneded probabilitic generative model:
+* By making this addition, we are assuming an expanded probabilistic generative model:
 $$
 \begin{aligned}
 \mathcal{D} &\sim f_0(\mathcal{D};\theta_0),\\
@@ -107,8 +107,8 @@ $$
 \end{aligned}
 $$
 where $h_0(\Omega_0)$ is a probability distribution (over the possible values of $\theta_0$)
-and is parameterized by $\Omega_0$ which is fixed and *known. 
-* The probability distribution $h_0(\Omega_0$ is known as the *prior*,
+and is parameterized by $\Omega_0$ which is fixed and *known*. 
+* The probability distribution $h_0(\theta_0;\Omega_0)$ is known as the *prior*,
 and $\Omega_0$ is known as the hyper-parameter.
 
 # Bayesian inference
