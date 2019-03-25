@@ -1,0 +1,172 @@
+---
+title: "Probability theory"
+author: |
+  | Mark Andrews
+  | Psychology Department, Nottingham Trent University
+  |   
+  | \faTwitter\ ```@xmjandrews```
+  | \faEnvelopeO\  ```mark.andrews@ntu.ac.uk```
+fontsize: 10pt
+output:
+ beamer_presentation:
+  keep_tex: true
+  fonttheme: "serif"
+  includes:
+   in_header: slides_preamble.tex
+ pdf_document: 
+  keep_tex: true
+  includes:
+   in_header: slides_preamble.tex
+bibliography: refs.bib
+csl: apa.csl
+---
+```{r setup, include=FALSE, message=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+library(ggplot2)
+library(dplyr)
+
+set.seed(42)
+```
+
+# Probability space
+
+* Probability theory begins with a *random experiment*. This is anything that can have a number of different possible outcomes.
+* The set of possible outcomes is the *sample space* that we can denote as follows.
+$$
+\Omega = \{\omega_1, \omega_2 \ldots \omega_n \ldots\},
+$$
+where each $\omega_i$ is a possible outcome.
+* We then define the set of possible *events* of $\Omega$. An *event* is any subset of $\Omega$.
+* The set of all possible events in a finite (or countably infinite) $\Omega$ is its power set. In an uncountably infinite $\Omega$, we must define a $\sigma$-algebra. We denote the set of events by $\mathcal{F}$.
+* We then define a function $P$ on $\mathcal{F}$
+$$
+P: \mathcal{F} \mapsto [0, 1].
+$$
+which is known as a *probability measure*, that obeys three axioms.
+* The triplet $(\Omega, \mathcal{F}, P)$ is a *probability space*.
+
+# Probability axioms
+
+* A probability measure obeys three axioms, usually known as the *Kolmolgorov axioms*.
+  * For any set $A \in \mathcal{F}$, $P(A) \leq 0$.
+  * $P(\Omega) = 1$.
+  * For any disjoint set $A_1, A_2 \ldots A_3 \ldots$, where $A_i \in \mathcal{F}$, then
+  $$
+  P\left(\bigcup_{i=1}^\infty A_i \right) = \sum_{i=1}^\infty P(A_i).
+  $$
+  
+* From this we can derive various theorems. For example,
+  * $0 \leq P(A) \leq 1$.
+  * $P(\emptyset) = 0$.
+  * $P(A^c) = 1 - P(A)$, where $A^c$ is the complement of $A$.
+  * $P(A \cup B) = P(A) + P(B) - P(A \cap B)$.
+  
+# Conditional probability
+
+* For any two events $A$ and $B$
+$$
+P(A \given B) = \frac{P(A \cap B)}{P(B)}
+$$
+* This effectively defines a new probability space with $B$ as the sample space.
+* Given that
+$$
+P(B \given A) = \frac{P(A \cap B)}{P(A)}
+$$
+and
+$$
+P(A \given B)P(B) = P(A \cap B),
+$$
+we therefore have
+$$
+P(B \given A) = \frac{P(A \given B)P(B)}{P(A)}.
+$$
+
+
+# Random variables
+
+* A random variable $X$ is a deterministic mapping from $\Omega$ to a measurable space. This space is usually $\mathbb{R}$ and so
+$$
+X \colon \Omega \mapsto \mathbb{R}
+$$
+* For any $s \subseteq \mathbb{R}$, the probability that $X$ takes a value in $s$ is
+$$
+\Prob{X \in s} = P(\{\omega\colon X(\omega) \in s\}).
+$$
+* We call $\Prob{X}$ is probability distribution of the random variable $X$ whose *support* is $\mathbb{R}$.
+
+# Joint random variables
+
+* Given a $\Omega$, we may define multiple random variable, e.g. $X$, $Y$ \ldots.
+* For any $s \subseteq \mathbb{R}$, $r \subseteq \mathbb{R}$, the probability that $X$ takes a value in $s$ *and* $Y$ takes a value in $r$ is 
+$$
+\Prob{X \in s, Y \in r} = P(\{\omega\colon X(\omega) \in s \land Y(\omega) \in r\}).
+$$
+* The conditional probability distribution of $X$ given $Y$ is 
+$$
+\Prob{X \in s \given Y \in r} = \frac{\Prob{X \in s, Y \in r}}{\Prob{Y \in r}}.
+$$
+* The marginal probability that $X \in s$ is 
+$$
+\Prob{X \in s} = \sum_{r \in \mathbb{R}}\Prob{X \in s, X \in r}.
+$$
+
+
+# Independent random variables
+
+* Two variables $X$ and $Y$ are *independent* if and only if
+$$
+\Prob{X, Y} = \Prob{X}\Prob{Y}
+$$
+* Two variables $X$ and $Y$ are *conditionally independent* given a third variable $Z$ is
+$$\Prob{X, Y \given Z} = \Prob{X \given Z}\Prob{Y \given Z}.$$
+
+# Chain rule
+
+* For random variables $X$, $Y$
+$$\Prob{X, Y} = \Prob{X\given Y}\Prob{Y} = \Prob{Y\given X}\Prob{X}$$.
+* For $X$, $Y$, $Z$,
+$$\begin{aligned}
+\Prob{X, Y, Z} &= \Prob{X \given Y, Z}\Prob{Y, Z},\\
+&=\Prob{Y \given X, Z}\Prob{X, Z},\\
+&=\Prob{Z \given X, Y}\Prob{X, Y}
+\end{aligned}
+$$
+
+# Reasoning with probabilistic models
+
+* If we have, e.g., a set of random variables $y_1, y_2 \ldots y_n$ that are independently and identically distributed as $N(\mu, \sigma^2)$, where $\mu$ and $\sigma$ also defined by probability distributions, our probabilistic model is a probability distribution over $n + 2$ random variables
+$$
+\Prob{y_1, y_2, y_2 \ldots y_n, \mu, \sigma^2}.
+$$
+* Because of conditional independence, this decomposes as
+$$
+\prod_{i=1}^n \Prob{y_i \given \mu, \sigma^2}\Prob{\mu, \sigma^2}.
+$$
+* The marginal probability of $y_i \ldots y_n$ is
+$$
+\Prob{y_1 \ldots y_n} = \int \Prob{y_1 \ldots y_n, \mu, \sigma} d\mu d\sigma^2
+$$
+
+# Bayes theorem
+
+* Given a joint probability distribution over $y_1 \ldots y_n$ and $\mu$, $\sigma^2$, we have 
+$$
+\Prob{\mu, \sigma^2 \given y_1 \ldots y_n} = \frac{\Prob{y_1 \ldots y_n, \mu, \sigma^2}}{\Prob{y_1 \ldots y_n}}
+$$
+and 
+$$
+\Prob{\mu, \sigma^2 \given y_1 \ldots y_n} = \frac{
+\prod_{i=1}^n \Prob{y_i \given \mu, \sigma^2}\Prob{\mu, \sigma^2}.
+}{
+\Prob{y_i \ldots y_n}
+}
+$$
+and
+$$
+\Prob{\mu, \sigma^2 \given y_1 \ldots y_n} = \frac{
+\prod_{i=1}^n \Prob{y_i \given \mu, \sigma^2}\Prob{\mu, \sigma^2}.
+}{
+\int \prod_{i=1}^n \Prob{y_i \given \mu, \sigma^2}\Prob{\mu, \sigma^2} d\mu d\sigma^2.
+}
+$$

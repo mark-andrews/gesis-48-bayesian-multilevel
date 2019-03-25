@@ -1,0 +1,387 @@
+\documentclass{slides}
+\usepackage{xspace}
+\usepackage{nth}
+\usepackage{fontawesome}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks = true,
+    urlcolor = blue
+}
+
+\title[Bayesian Inference]{Introducing Bayesian Inference}
+\author[Andrews]{Mark Andrews\\ $\phantom{foo}$ \\ Psychology, Nottingham Trent University \\ $\phantom{foo}$ \\ \faEnvelopeO \  \texttt{mark.andrews@ntu.ac.uk},\ \faEnvelopeO\  \\ $\phantom{foo}$ \\ \faTwitter \href{https://twitter.com/xmjandrews}{@xmjandrews}, }
+
+\date{March 25, 2018}
+
+\begin{document}
+{
+	\begin{frame}
+		\titlepage
+	\end{frame}
+}
+
+
+\begin{frame}
+\frametitle{Inference in a Bernoulli Distribution}
+\framesubtitle{e.g., inferring a coin's bias}
+
+\vspace{\baselineskip}
+\begin{quotation} \small \ldots Polish mathematicians Tomasz Gliszczynski and
+	Waclaw Zawadowski\ldots spun a Belgian one euro coin 250 times,
+	and found it landed heads up 140 times \ldots When tossed 250
+	times, the one euro coin came up heads 139 times and tails 111.
+	\ldots 
+\end{quotation}
+	\vspace{-\baselineskip}
+\flushright{\small \emph{The Guardian}, January 4, 2002\footnote{ See
+	\texttt{http://bit.ly/1BOKu9b} for original story and
+	\texttt{http://bit.ly/1BOKx4Q} for discussion.}}
+	\vspace{0.5\baselineskip}
+
+	\begin{itemize}
+		\item A sample of $n=250$ coin tosses can be modelled as $n$
+			independent and identically distributed (iid) Bernoulli
+			random variables with parameter $\theta$, which
+			represents the coin's bias.
+
+		\item In other words, our \emph{probabilistic generative model} of the data is
+			\[
+				x_i \sim \textrm{Bernoulli}(\theta),\quad\text{for $i \in \{1,2\ldots n\}$.}
+			\]
+			where $x_i \in \{0, 1\}$ represents the outcome of the coin flip $i$.
+		\item Our aim is to infer the probable values of $\theta$ given an observation of $m=139$ (or $m=140$, etc.).
+	\end{itemize}
+\end{frame}
+\begin{frame}
+	\frametitle{Sampling theory based inference}
+	\framesubtitle{In a nutshell}
+	\begin{itemize}
+		\item The traditional sampling theory based approach to inference begins by considering the \emph{sampling distribution} 
+			of outcomes according to some hypothetical value of $\theta$, which we signify with $\theta_0$.
+		\item In our case, the sampling distribution is a binomial distribution with parameters $n=250$ and $\theta=\theta_0$.
+		\item We then calculate the probability of observing data \emph{as or more extreme} that the result we obtained, i.e. $m=139$ Heads.
+		\item This probability is exactly the p-value, and effectively tells us how typical or unsurprising an outcome of $m=139$ Heads would be if the true value of $\theta$ was $\theta_0$.
+		\item Furthermore, the set of values of $\theta_0$ that we would not reject at the $\alpha$ level of significance is exactly the $1-\alpha$ \emph{confidence interval}.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Sampling theory based inference}
+	\framesubtitle{A binomial distribution with $n=250$ and $\theta=0.5$.}
+	\input{tikZfigs/binomial.sampling.distribution.tex}
+	{\small
+	\begin{itemize}
+	\item Areas shaded in blue are values \emph{as or more extreme} than $m=139$.
+	\item For the interactive version: \url{https://lawsofthought.shinyapps.io/binomial_test/}.
+	\end{itemize}
+	}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Inference using the likelihood function}
+		\begin{itemize}
+			\item The likelihood function is a function over the parameter space, i.e. over $\theta$.
+			\item It gives the probability\footnote{Strictly speaking, it gives the probability times an arbitrary positive constant $c$.}
+				of the observed data, i.e. $m=139$ Heads in $n=250$ coin flips, for all possible values of $\theta$.
+			\item As such, it tells us how well any possible value of $\theta$ predicts the observed data.
+			\item We usually denote the likelihood function as follows:
+				\[L(\theta\given\mathcal{D}) \propto \Prob{\mathcal{D}\given\theta},\]
+				where $\mathcal{D}$ signifies the observed data, i.e. $\mathcal{D} = \{n=250, m=130\}$.
+		\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{The likelihood function versus sampling distribution}
+		\begin{itemize}
+			\item The sampling distribution is the binomial distribution:
+				\[\Prob{m \given \theta,n} = \binom{n}{m} \theta^m (1-\theta)^{n-m}.\]
+				This is always a function of $m$, with $\theta$ and $n$ fixed.
+			\item The corresponding likelihood function treats the same function
+		\[\Prob{m \given \theta,n} = \binom{n}{m} \theta^m (1-\theta)^{n-m},\] 
+				as a function of $\theta$, but now with $m$ and $n$ fixed.
+			\item As such, the binomial likelihood is 
+				\[L(\theta\given\mathcal{D}) \propto \theta^m (1-\theta)^{n-m}.\]
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}
+	\frametitle{Binomial likelihood}
+	\framesubtitle{Given $n=250$ and $m=139$}.
+	\input{tikZfigs/binomial.likelihood.2.tex}
+	{\small
+	\begin{itemize}
+		\item The red interval gives the values of $\theta$ that are more than $\tfrac{1}{8}$ the value of the maximum likelihood estimator.
+	\item For the interactive version: \url{https://lawsofthought.shinyapps.io/binomial_likelihood/}.
+	\end{itemize}
+	}
+\end{frame}
+
+\begin{frame}
+	\frametitle{The likelihood principle}
+\begin{quotation}
+	Within the framework of a statistical model, all the information which the data provide concerning the
+relative merits of two hypotheses is contained in the likelihood ratio of those
+hypotheses on the data.
+\end{quotation}
+\vspace{-\baselineskip}
+	\flushright{\small Edwards \emph{Likelihood} (1972, p.30)}
+\vspace{0.5\baselineskip}
+	\begin{itemize}
+		\item In any statistical model, all information provided by the observed data that are relevant to the parameters is given by the likelihood function.
+		\item In our case, all information in the observed data concerning the true value of $\theta$ is given by $\theta^m (1-\theta)^{n-m}$.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{The law of the likelihood}
+\begin{quotation}
+	Within the framework of a statistical model,  a
+particular set of data supports one statistical
+hypothesis better than another if the likelihood of
+the first hypothesis, on the data, exceeds the
+likelihood of the second hypothesis.
+\end{quotation}
+\vspace{-\baselineskip}
+	\flushright{\small Edwards \emph{Likelihood} (1972, p.30)}
+\vspace{0.5\baselineskip}
+	\begin{itemize}
+		\item In our case, how well the observed data support the hypothesis that $\theta = \theta_1$ versus $\theta = \theta_0$ is given by
+			\[
+				\frac{L(\theta_1\given \mathcal{D})}{L(\theta_0\given \mathcal{D})},
+				\]
+			and the data support the hypothesis $\theta = \theta_1$ more than $\theta = \theta_0$ if
+		\[
+				\frac{L(\theta_1\given \mathcal{D})}{L(\theta_0\given \mathcal{D})} > 1.0.
+				\]
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{The likelihood interval}
+	\begin{itemize}
+		\item The likelihood interval gives the set of possible values of $\theta$ for which the data provide non-trivial evidence.
+		\item The $\gamma \in (0, 1)$ likelihood interval is  
+		\[
+			\left\{	\theta \colon \frac{L(\theta\given \mathcal{D})}{L(\theta_{\textsc{mle}}\given \mathcal{D})} > \gamma \right\},
+				\]
+			where $\theta_{\textsc{mle}}$ is the maximum likelihood estimator.
+		\item All values within the $\gamma$ likelihood interval have evidential support that is greater than $\gamma$ times the support of $\theta_{\textsc{mle}}$.
+		\item Typical values of $\gamma$ are $\tfrac{1}{8}$, $\tfrac{1}{32}$, etc.
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{Bayesian inference of a coin's bias}
+	\begin{itemize}
+		\item The probabilistic generative model of the Euro coin toss data is as follows:
+			\begin{itemize}
+				\item The coin's bias corresponds to the fixed but unknown value of the parameter $\theta$ of a Bernoulli random variable.
+				\item The observed outcomes $x_1, x_2 \cdots x_n$ are $n$ iid samples from $\textrm{Bernoulli}(\theta)$.
+			\end{itemize}
+		\item This generative model can be extended by assuming that $\theta$ is itself drawn from a prior distribution $\Prob{\theta}$:
+			\begin{align*}
+				\theta &\sim \Prob{\theta},\\
+				x_i &\sim \textrm{Bernoulli}(\theta),\quad\text{for $i \in \{1,2\ldots n\}$.}
+			\end{align*}
+		\item In other words, we assume that a value for $\theta$ was randomly drawn from $\Prob{\theta}$ and then $n$ binary variables were sampled from $\textrm{Bernoulli}(\theta)$.
+		\item We refer to $\Prob{\theta}$ as the \emph{prior} distribution on $\theta$.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Conjugate Priors}
+	\begin{itemize}
+		\item For a given likelihood function, a \emph{conjugate prior} distribution is a prior probability distribution that leads to a posterior distribution of the same parametric family.
+		\item Using conjugate priors allows Bayesian inference and other probabilistic calculations to be performed analytically.
+		\item Only a small subset of probabilistic models have conjugate priors.
+		\item However, conjugate priors play a vital role in Monte Carlo methods like Gibbs sampling even in complex models.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{The beta distribution}
+	\begin{itemize}
+		\item For the binomial likelihood function
+\[
+	\theta^m (1-\theta)^{n-m}	
+\]
+a conjugate prior is the beta distribution
+\[
+	\textrm{Beta}(\theta \given \alpha, \beta) = \frac{\Gamma(\alpha + \beta)}{\Gamma(\alpha)\Gamma(\beta)} \theta^{\alpha-1}(1 - \theta)^{\beta-1}.
+\]
+\item The \emph{normalizing constant} term is
+	\[
+		\frac{\Gamma(\alpha + \beta)}{\Gamma(\alpha)\Gamma(\beta)} = \frac{1}{B(\alpha,\beta)},
+	\]
+	where $B(\alpha,\beta)$ is the beta function:
+	\[
+		B(\alpha,\beta) = \int \theta^\alpha (1-\theta)^{\beta-1}\ d\theta.
+	\]
+	\end{itemize}
+\end{frame}
+\begin{frame}
+	\frametitle{The beta distribution}
+	\input{tikZfigs/beta.3.5.distribution}
+	The beta distribution with $\alpha=3$ and $\beta=5$.
+\end{frame}
+\begin{frame}
+	\frametitle{Posterior distribution}
+	\begin{itemize}
+		\item Denoting the observed data by $D = (n, m)$, with the beta prior, the posterior distribution is 
+
+		\begin{align*}
+			\Prob{\theta\given D, \alpha,\beta} &= \frac{\Prob{D\given\theta}\Prob{\theta\given\alpha,\beta}}{\int\Prob{D\given\theta}\Prob{\theta\given\alpha,\beta}\ d\theta},\\
+			&\propto \overbrace{\theta^{m} (1-\theta)^{n-m}}^{\text{likelihood}} \times \overbrace{\theta^{\alpha-1}(1 - \theta)^{\beta-1}}^{\text{prior}},\\
+			&\propto \theta^{m + \alpha-1}(1 - \theta)^{n-m+\beta-1},\\
+			&= \textrm{Beta}(m + \alpha, n - m + \beta).
+		\end{align*}
+		where the normalizing constant is the reciprocal of the beta function 
+		\begin{align*}
+			\frac{\Gamma(m + \alpha)\Gamma(n - m + \beta)}{\Gamma(n + \alpha+\beta)} &= \int \theta^{\alpha + m - 1} (1-\theta)^{ \beta + n - m - 1}\ d\theta.\\
+			&=B(\alpha + m, \beta + n - m).
+		\end{align*}
+
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Posterior distribution}
+	\begin{itemize}
+		\item For our Euro coin example, our observed data are $n=250$ and $m=139$.
+		\item A noninformative uniform prior on $\theta$ is $\textrm{Beta}(\alpha=1,\beta=1)$.
+		\item With this prior, the posterior distribution is 
+			\begin{align*}
+				\textrm{Beta}(m + \alpha, n - m + \beta) &= \textrm{Beta}(139 + 1, 250 - 139 + 1),\\
+				&= \textrm{Beta}(140, 112)
+			\end{align*}
+	\end{itemize}
+\end{frame}
+\begin{frame}
+	\frametitle{Posterior distribution}
+	\framesubtitle{when $n=250$, $m=139$, $\alpha=1$ and $\beta=1$}
+	\input{tikZfigs/beta.140.112.distribution}
+	{\small For an interactive version: \url{https://lawsofthought.shinyapps.io/bayesian_coin_inference/}.}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Summarizing the posterior distribution}
+	\begin{itemize}
+		\item The mean, variance and modes of any beta distribution are as follows:
+			\begin{align*}
+				\langle \theta \rangle &=\frac{\alpha}{\alpha+\beta} ,\\
+				\mathrm{V}(\theta) &= \frac{\alpha\beta}{(\alpha+\beta)^2(\alpha+\beta+1)},\\
+				\textrm{mode}(\theta) &= \frac{\alpha-1}{\alpha+\beta-2}.
+			\end{align*}
+		\item Thus, in our case of $\textrm{Beta}(140, 112)$, we have
+			\begin{align*}
+				\langle \theta \rangle &=  0.5556,\\
+				\mathrm{V}(\theta) &= 0.001, \quad\textrm{sd}(\theta) = 0.0312,\\
+				\textrm{mode}(\theta) &= 0.556.
+			\end{align*}
+
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+	\frametitle{High posterior density (\hpd) intervals}
+	\begin{itemize}
+		\item \hpd intervals provide ranges that contain specified probability mass. For example, the 0.95 \hpd interval is the range of values that contain 0.95 of the probability mass of the distribution.
+		\item The $\varphi$ \hpd interval for the probability density function $\Prob{x}$ is computed by finding a probability density value $p^*$ such that 
+		\[
+			\Prob{\{x \colon \Prob{x} \geq p^*\}} = \varphi.
+		\]
+		\item In other words, we find the value $p^*$ such that the probability mass of the set of points whose density is greater than than $p^*$ is exactly $\varphi$. 
+		\item In general, the \hpd is not trivial to compute but in the case of symmetric distributions, it can be easily computed from the cumulative density function.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{The 0.95 \hpd interval}
+	\input{tikZfigs/beta.140.112.hpd}
+	The posterior distribution, with its $0.95$ \hpd, when $n=250$, $m=139$, $\alpha=1$ and $\beta=1$. In this case, the \hpd interval is $(0.494, 0.617)$.
+\end{frame}
+
+\begin{frame}
+	\frametitle{Posterior predictive distribution}
+
+	\begin{itemize}
+		\item Given that we have observed $m$ heads in $n$ coin tosses, what is the probability that the \emph{next} coin toss is heads.
+		\item This is given by the \emph{posterior predictive} probability that $x=1$:
+			\begin{align*}
+				\Prob{x=1\given D, \alpha, \beta} &= \int \Prob{x=1 \given \theta} \overbrace{\Prob{\theta\given D, \alpha, \beta}}^{\text{Posterior}}\ d\theta,\\
+				&= \int \theta \times \Prob{\theta\given D, \alpha, \beta} \ d\theta,\\
+				&= \left\langle \theta \right\rangle,\\
+				&= \frac{\alpha+m}{\alpha+\beta+n}.
+			\end{align*}
+		\item Thus, given 139 heads in 250 tosses, the predicted probability that the next coin will also be heads is $\approx 0.5556$.
+	\end{itemize}
+\end{frame}
+\begin{frame}
+	\frametitle{Marginal likelihood}	
+	\begin{itemize}
+		\item The posterior distribution is 
+		\[
+			\Prob{\theta\given D, \alpha,\beta}
+			= \frac{\overbrace{\Prob{D\given\theta}}^{\text{Likelihood}}\overbrace{\Prob{\theta\given\alpha,\beta}}^{\text{Prior}}}
+			{\underbrace{\int\Prob{D\given\theta}\Prob{\theta\given\alpha,\beta}\ d\theta}_{\text{Marginal likelihood}}}.
+		\]
+		where the \emph{marginal likelihood} gives the likelihood of the model given the observed data:
+		\[
+			\int\Prob{D\given\theta}\Prob{\theta\given\alpha,\beta}\ d\theta \defeq \Prob{D\given \alpha,\beta}.
+		\]
+	\item In this example, it has a simple analytical form:
+		\[
+			\Prob{D\given \alpha,\beta} = B(\alpha+m, \beta+n-m) = \frac{\Gamma(m + \alpha)\Gamma(n - m + \beta)}{\Gamma(n + \alpha+\beta)}.
+		\]
+
+
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Model comparison with Bayes factors}
+	\begin{itemize}
+		\item Given $D$, we can compare the probability of model $M_1$ relative to model $M_0$ as follows:
+			\begin{align*}
+				\frac{\Prob{M_1\given D}}{\Prob{M_0\given D}} = 
+				\underbrace{\frac{\Prob{D\given M_1}}{\Prob{D\given M_0}}}_{\text{Bayes factor}} \times
+				\underbrace{\frac{\Prob{M_1}}{\Prob{M_0}}}_{\text{Priors odds}}. 
+			\end{align*}
+		\item When both models are equally probable a priori, then the relative posterior probabilities is determined by the Bayes factor.
+		\item We can compare our model $M_1$, i.e. with $\alpha = \beta = 1$, with the $M_0$ model that $\theta = \frac{1}{2}$.
+			\begin{align*}
+				\frac{\Prob{D\given M_1}}{\Prob{D\given M_0}} = \frac{
+				\int\Prob{D\given\theta}\Prob{\theta\given\alpha=1,\beta=1}\ d\theta 
+				}{
+					\int\Prob{D\given\theta} \delta(\theta-\frac{1}{2})\ d\theta.
+				}
+			\end{align*}
+\end{itemize}
+
+	\end{frame} 
+	
+\begin{frame}
+	\frametitle{Model comparison with Bayes factors}
+	\begin{itemize}
+		\item We can compare our model $M_1$, i.e. with $\alpha = \beta = 1$, with the $M_0$ model that $\theta = \frac{1}{2}$.
+			\begin{align*}
+				\frac{\Prob{D\given M_1}}{\Prob{D\given M_0}} &= \frac{
+				\int\Prob{D\given\theta}\Prob{\theta\given\alpha=1,\beta=1}\ d\theta 
+				}{
+					\int\Prob{D\given\theta} \delta(\theta-\frac{1}{2})\ d\theta.
+				},\\
+				&= \frac{\Gamma(\alpha+m)\Gamma(\beta+n-m)}{\Gamma(\alpha+\beta+n)} \Big/ \tfrac{1}{2}^m (1-\tfrac{1}{2})^{n-m},\\
+				&= \frac{m!(n-m)!}{(n+1)!} \big/ \tfrac{1}{2^n}.\\
+				\intertext{If $n=250$, $m=139$, then}
+				&= \frac{139!111!}{251!} \big/ \tfrac{1}{2^{250}} = 0.38.
+			\end{align*}
+		\item This is a factor of $2.65$ in favour of the unbiased coin hypothesis.
+		\item Note that the classical statistics null hypothesis test gives a p-value of $p=0.0875$.
+	\end{itemize}
+	\let\thefootnote\relax\footnote{If $n$ is a positive integer $\Gamma(n) = (n-1)!$.}
+	\end{frame}
+\end{document}
