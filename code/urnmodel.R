@@ -24,7 +24,7 @@ binomial_likelihood <- function(m, n, N){
 
 plot_binomial_likelihood <- function(m, n, N){
   title <- sprintf('Likelihood. %d red having sampled %d with replacement from urn with %d', m, n, N)
-  binomial_likelihood(m, n, N) %>% likelihood_plot('likelihood', title)
+  binomial_likelihood(m, n, N) %>% fplot('likelihood', title)
 }
 
 # Assume we have N (by default 100) marbles in an urn.
