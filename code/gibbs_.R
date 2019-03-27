@@ -36,11 +36,8 @@ conditional.dist <- function(center, Sigma, x.val=0.0, x.dim=2) {
   
 }
 
-n.samples <- 10
-x <- c(-10, -10)
-# n.samples <- 1000
-# x <- c(0, 0)
-
+n.samples <- 1000
+x <- c(0, 0)
 X.samples <- c(x)
 for (i in 1:n.samples) {
   
@@ -58,7 +55,5 @@ y <- mvrnorm(1000, mu=center, Sigma=Sigma)
 par(mfrow=c(2,1))
 plot(ellipse(Sigma, centre = center), type='l', col='blue', xlab='x', ylab='y', xlim=c(-2, 6), ylim=c(-6, 8))
 points(y)
-plot(ellipse(Sigma, centre = center), type='l', col='blue', xlab='x', ylab='y', xlim=c(-10, 6), ylim=c(-11, 12))
+plot(ellipse(Sigma, centre = center), type='l', col='blue', xlab='x', ylab='y', xlim=c(-2, 6), ylim=c(-6, 8))
 points(X.samples)
-lines(X.samples)
-

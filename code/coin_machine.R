@@ -1,19 +1,31 @@
 library(rstan)
+rstan_options(auto_write = TRUE)
+
 ilogit <- function(x) 1/(1+exp(-x))
 
 set.seed(10101)
 J <- 25
 n <- 250
-alpha <- rnorm(J, mean=0.5, sd=1.75)
+
+# the mean and standard deviation of distribution over alpha space
+mu <- 0.5
+tau <- 1.75
+
+# Generate J samples from normal distribution
+alpha <- rnorm(J, mean=mu, sd=tau)
+
+# Convert alpha (which is a log odds) to theta (probability)
 theta <- ilogit(alpha)
 
+# sample from J binomial distributions of size n
+# prob of "success" for distribution j is theta[j]
 m <- sapply(theta,
             function(theta) rbinom(1, size=n, prob=theta)
 )
 
-Df <- list(J = J,
-           n = 250,
-           m = m)
+Df <- list(J = J,   # integer
+           n = n,   # integer  
+           m = m)   # vector of size J
 
 M <- stan(file = 'code/coin_machine.stan', 
           chains = 4,
