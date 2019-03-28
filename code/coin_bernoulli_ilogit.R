@@ -42,7 +42,7 @@ plot(M, pars='theta')
 stan_hist(M, bins=25)
 
 # density
-stan_dens(M)
+stan_dens(M, pars='theta')
 
 # Another density plot
 plot(M, 

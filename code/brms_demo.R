@@ -46,8 +46,8 @@ newpriors.i <- c(prior_string("student_t(3, 18, 10)", class = "Intercept"),
                  prior_string("student_t(3, 0, 10)", class = "sigma"))
 
 newpriors <- c(prior_string("student_t(3, 0, 10)", class = "b"),
-                 prior_string("student_t(3, 18, 10)", class = "Intercept"),
-                 prior_string("student_t(3, 0, 10)", class = "sigma"))
+               prior_string("student_t(3, 18, 10)", class = "Intercept"),
+               prior_string("student_t(3, 0, 10)", class = "sigma"))
 
 newpriors.cm <- c(prior_string("student_t(3, 18, 10)", class = "b"),
                prior_string("student_t(3, 0, 10)", class = "sigma"))

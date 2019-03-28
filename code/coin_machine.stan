@@ -21,6 +21,7 @@ transformed parameters {
 
 model {
   
+  // hyper-priors 
   mu ~ normal(0, 10);
   tau ~ cauchy(0, 5);
   
