@@ -49,7 +49,7 @@ mathach %>%
 
 M <- brm(reaction_time ~ 1 + (1|subject),
          cores = 2, 
-         prior = set_prior('normal(0, 100)'), 
+         #prior = set_prior('normal(0, 100)'), 
          save_all_pars = T,
          data = fake_rt)
 
@@ -68,7 +68,7 @@ prior_summary(M)
 # -------- sleep ---------------------
 
 # ------- mathach --------------------
-M <- brm(Reaction ~ Subject + (Reaction|Subject),
+M <- brm(Reaction ~ Days + (Days|Subject),
          cores = 2, 
          prior = set_prior('normal(0, 100)'), 
          save_all_pars = T,
@@ -115,22 +115,22 @@ group_by(science_df, school, class) %>%
 
 
 # To model this nesting, we'd do the following:
-M <- brm(like ~ sex + PrivPub + (1|school/class), 
-           cores = 2,               
+M <- brm(like ~ sex + PrivPub + (1|school/class),
+         cores = 2,               
            prior = set_prior('normal(0, 100)'),  
            save_all_pars = T,
            data = science_df)
 
 # which is identical to
 M <- brm(like ~ sex + PrivPub + (1|school) + (1|school:class), 
-           cores = 2,               
-           prior = set_prior('normal(0, 100)'),  
-           save_all_pars = T,
-           data = science_df)
+         cores = 2,               
+         prior = set_prior('normal(0, 100)'),  
+         save_all_pars = T,
+         data = science_df)
 
 # however, "Class" is unambiguous 
 
-M <- brm(like ~ sex + PrivPub + (1|school) + (1|Class), 
+M <- brm(like ~ sex * PrivPub + (1|school) + (1|Class), 
          cores = 2,               
          prior = set_prior('normal(0, 100)'),  
          save_all_pars = T,
@@ -138,7 +138,7 @@ M <- brm(like ~ sex + PrivPub + (1|school) + (1|Class),
 
 # here's a hierarchical model with random slopes
 
-M <- brm(like ~ sex + PrivPub + (sex|school) + (sex|Class), 
+M <- brm(like ~ sex * PrivPub + (sex|school) + (sex|Class), 
          cores = 2,               
          prior = set_prior('normal(0, 100)'),  
          save_all_pars = T,
@@ -165,6 +165,8 @@ ggplot(insulation_df,
 ) + geom_point() +
   stat_smooth(method = 'lm', se = F)
 
+# Gas ~ Temp*Insul
+# Gas ~ Temp + Insul + Temp:Insul
 
 # Varying slopes by insul (non-multilevel)
 M_vsvi <- brm(Gas ~ Temp*Insul, 
